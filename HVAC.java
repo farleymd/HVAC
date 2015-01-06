@@ -2,7 +2,6 @@ package com.clara;
 
 import java.util.LinkedList;
 import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class HVAC {
