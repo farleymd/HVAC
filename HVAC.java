@@ -149,8 +149,6 @@ public class HVAC {
         System.out.println("2. Add service call for AC unit");
         System.out.println("3. Quit");
 
-        //TODO validation - is the number within the correct range?
-
         int choice = getPositiveIntInput();
 
         switch (choice) {
