@@ -14,9 +14,10 @@ public class HVAC {
     private static LinkedList<ServiceCall> todayServiceCalls;
     private static LinkedList<ServiceCall> resolvedServiceCalls;
 
+    private static Scanner scanner;   //Global scanner used for all input
+
 
     public static void main(String[] args) {
-
 
         //Use todayServiceCalls as a Queue
         //So, add new calls to the end with add()
@@ -31,11 +32,11 @@ public class HVAC {
 
         resolvedServiceCalls = new LinkedList<ServiceCall>();
 
+        scanner = new Scanner(System.in);
 
-        // ServiceCall currentCall;  //The one we are working on. Will be required to resolve this before moving onto the next
+        boolean quit = false;
 
-
-        while (true) {
+        while (!quit) {
 
             System.out.println("1. Add service call to queue");
             System.out.println("2. Resolve current call");
@@ -44,12 +45,15 @@ public class HVAC {
             System.out.println("5. Print all resolved calls ");
             System.out.println("6. Quit");
 
+            //TODO validation - is the number within the correct range?
+
             int choice = getPositiveIntInput();
 
             switch (choice) {
 
                 case 1: {
                     addServiceCall();
+                    break;
                 }
                 case 2: {
                     //Resolve service call
@@ -70,11 +74,13 @@ public class HVAC {
 
                     //Add this call to the list of resolved calls
                     resolvedServiceCalls.add(resolvedCall);
+                    break;
 
                 }
                 case 3: {
                     //Print next service call - it is the one at the top of the queue
                     System.out.println(todayServiceCalls.peek());
+                    break;
                 }
                 //Print all service calls
                 case 4: {
@@ -82,6 +88,7 @@ public class HVAC {
                     for (ServiceCall c : todayServiceCalls) {
                         System.out.println(c);
                     }
+                    break;
                 }
 
                 case 5: {
@@ -89,10 +96,13 @@ public class HVAC {
                     for (ServiceCall c : resolvedServiceCalls) {
                         System.out.println(c);
                     }
+                    break;
                 }
 
                 case 6: {
+                    quit = true;
                     break;
+
                 }
 
                 default: {
@@ -102,30 +112,18 @@ public class HVAC {
 
 
         }
+
+        //Tidy up... close the scanner
+        scanner.close();
     }
 
 
-    private static void printAllResolvedCalls() {
-        //TODO
-    }
-
-    private static void resolveServiceCall(ServiceCall call, String resolution, double fee) {
-        //TODO
-        //Store resolution string, date, feein this call, remove from queue, add to list of resolved calls
-
-
-    }
-
-    private static void printAllCalls() {
-        //TODO
-
-    }
 
 
 
     private static void addServiceCall() {
 
-        //TODO
+
 
         //What type of thing needs servicing?
 
@@ -133,6 +131,7 @@ public class HVAC {
         System.out.println("2. Add service call for AC unit");
         System.out.println("3. Quit");
 
+        //TODO validation - is the number within the correct range?
 
         int choice = getPositiveIntInput();
 
@@ -142,8 +141,10 @@ public class HVAC {
 
                 System.out.println("Enter address of furnace");
                 String address = getStringInput();
+
                 System.out.println("Enter description of problem");
                 String problem = getStringInput();
+
                 int type = 0;
                 while (type < 1 || type > 3) {
                     System.out.println("Type of furnace: " +
@@ -156,12 +157,13 @@ public class HVAC {
                 Furnace f = new Furnace(address, problem, new Date(), type);
 
                 todayServiceCalls.add(f);
+                System.out.println("Added furnace " + f + " to list of calls");
+                break;
 
             }
             case 2: {
-                //TODO
 
-                System.out.println("Enter address of furnace");
+                System.out.println("Enter address of AC Unit");
                 String address = getStringInput();
                 System.out.println("Enter description of problem");
                 String problem = getStringInput();
@@ -170,6 +172,8 @@ public class HVAC {
 
                 CentralAC ac = new CentralAC(address, problem, new Date(), model);
                 todayServiceCalls.add(ac);
+                System.out.println("Added AC unit " + ac + " to list of calls");
+                break;
 
             }
             case 3: {
@@ -181,47 +185,48 @@ public class HVAC {
     }
 
     private static int getPositiveIntInput() {
-        Scanner scanner = new Scanner(System.in);
+
         while (true) {
             try {
-                int selection = scanner.nextInt();
-                if (selection >= 0) {
-                    scanner.close();
-                    return selection;
+                String stringInput = scanner.nextLine();
+                int intInput = Integer.parseInt(stringInput);
+                if (intInput >= 0) {
+                    return intInput;
                 } else {
-                    System.out.println("Please enter a positive integer number");
+                    System.out.println("Please enter a positive number");
                     continue;
                 }
-            } catch (InputMismatchException ime) {
-                System.out.println("Please type a positive integer number");
-                String dumpRestOfInput = scanner.next();  //Force scanner to throw away the last (invalid) input
+            } catch (NumberFormatException ime) {
+                System.out.println("Please type a positive number");
+                // String dumpRestOfInput = scanner.nextLine();  //Force scanner to throw away the last (invalid) input
             }
         }
+
     }
 
     private static double getPositiveDoubleInput() {
-        Scanner scanner = new Scanner(System.in);
+
         while (true) {
             try {
-                double selection = scanner.nextDouble();
-                if (selection >= 0) {
-                    scanner.close();
-                    return selection;
+                String stringInput = scanner.nextLine();
+                double doubleInput = Double.parseDouble(stringInput);
+                if (doubleInput >= 0) {
+                    return doubleInput;
                 } else {
-                    System.out.println("Please enter a positive number number");
+                    System.out.println("Please enter a positive number");
                     continue;
                 }
-            } catch (InputMismatchException ime) {
+            } catch (NumberFormatException ime) {
                 System.out.println("Please type a positive number");
-                String dumpRestOfInput = scanner.next();  //Force scanner to throw away the last (invalid) input
+               // String dumpRestOfInput = scanner.nextLine();  //Force scanner to throw away the last (invalid) input
             }
         }
 
     }
 
     private static String getStringInput() {
-        Scanner scanner = new Scanner(System.in);
-        String entry = scanner.next();
+
+        String entry = scanner.nextLine();
         return entry;
 
     }
