@@ -12,6 +12,7 @@ public class ServiceCall {
     protected Date reportedDate;
     protected Date resolvedDate;
 
+    protected final static double UNRESOLVED = -1  ;  //Flag to indicate this hasn't been resolved so we don't have a fee yet
     public Date getResolvedDate() {
         return resolvedDate;
     }
@@ -35,6 +36,7 @@ public class ServiceCall {
         this.serviceAddress = serviceAddress;
         this.problemDescription = problemDescription;
         this.reportedDate = date;
+        this.fee = UNRESOLVED;
     }
 
 

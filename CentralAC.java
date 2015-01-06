@@ -23,4 +23,22 @@ public class CentralAC extends ServiceCall{
         this.model = model;
     }
 
+
+    @Override
+    public String toString() {
+
+       String resolvedDateString = ( resolvedDate == null) ? "Unresolved" : this.resolvedDate.toString();
+        String resolutionString = ( this.resolution == null) ? "Unresolved" : this.resolution;
+        String feeString = (fee == UNRESOLVED) ? "Unresolved" : "$" + Double.toString(fee);
+
+
+        return "Central AC Unit Service Call " + "\n" +
+                "Service Address= " + serviceAddress + "\n" +
+                "Problem Description = " + problemDescription  + "\n" +
+                "Reported Date = " + reportedDate + "\n" +
+                "Resolved Date = " + resolvedDateString + "\n" +
+                "Resolution = " + resolutionString + "\n" +
+                "Fee = " + feeString ;
+
+    }
 }

@@ -45,8 +45,6 @@ public class HVAC {
             System.out.println("5. Print all resolved calls ");
             System.out.println("6. Quit");
 
-            //TODO validation - is the number within the correct range?
-
             int choice = getPositiveIntInput();
 
             switch (choice) {
@@ -60,12 +58,17 @@ public class HVAC {
 
                     //Remove from head of the queue
 
+                    if (todayServiceCalls.isEmpty()) {
+                        System.out.println("No service calls today");
+                        break;
+                    }
+
                     ServiceCall resolvedCall = todayServiceCalls.remove();
 
                     System.out.println("Enter resolution for " + resolvedCall);
 
                     String resolution = getStringInput();
-
+                    System.out.println("Enter fee charged to customer");
                     double fee = getPositiveDoubleInput();
 
                     resolvedCall.setResolution(resolution);
@@ -79,22 +82,41 @@ public class HVAC {
                 }
                 case 3: {
                     //Print next service call - it is the one at the top of the queue
-                    System.out.println(todayServiceCalls.peek());
+                    if (todayServiceCalls.isEmpty()) {
+                        System.out.println("No service calls today");
+                        break;
+                    } else {
+                        System.out.println(todayServiceCalls.peek());
+                    }
                     break;
                 }
                 //Print all service calls
                 case 4: {
+
                     System.out.println("Today's service calls are: ");
-                    for (ServiceCall c : todayServiceCalls) {
-                        System.out.println(c);
+
+                    if (todayServiceCalls.isEmpty()) {
+                        System.out.println("No service calls today");
+                        break;
+                    }
+
+                    for (int call = 0; call < todayServiceCalls.size() ; call++) {
+                        System.out.println("Service Call " + call + "\n" + todayServiceCalls.get(call) + "\n");
                     }
                     break;
                 }
 
                 case 5: {
                     System.out.println("List of resolved calls: ");
+
+                    if (resolvedServiceCalls.isEmpty()) {
+                        System.out.println("No resolved calls");
+                        break;
+                    }
+
                     for (ServiceCall c : resolvedServiceCalls) {
-                        System.out.println(c);
+                        System.out.println(c + "\n");
+
                     }
                     break;
                 }
@@ -106,24 +128,21 @@ public class HVAC {
                 }
 
                 default: {
-                    System.out.println("Enter a valid number");
+                    System.out.println("Enter a number from the menu choices");
                 }
+
             }
 
 
         }
 
+        System.out.println("Thanks, bye!");
         //Tidy up... close the scanner
         scanner.close();
     }
 
 
-
-
-
     private static void addServiceCall() {
-
-
 
         //What type of thing needs servicing?
 
@@ -147,17 +166,16 @@ public class HVAC {
 
                 int type = 0;
                 while (type < 1 || type > 3) {
-                    System.out.println("Type of furnace: " +
-                            Furnace.FurnaceTypes.FORCED_AIR + "  = forced air \n"
-                            + Furnace.FurnaceTypes.BOILER + " = boiler/radiators\n"
-                            + Furnace.FurnaceTypes.OCTOPUS + " = old 'octopus' furnace");
+                    System.out.println("Type of furnace?\n" +
+                            Furnace.FurnaceTypeManager.furnaceTypeUserChoices());
+                            //We can only choose from types defined in FurnaceTypeManager
                     type = getPositiveIntInput();
                 }
 
                 Furnace f = new Furnace(address, problem, new Date(), type);
 
                 todayServiceCalls.add(f);
-                System.out.println("Added furnace " + f + " to list of calls");
+                System.out.println("Added the following furnace to list of calls:\n" + f);
                 break;
 
             }
@@ -172,17 +190,24 @@ public class HVAC {
 
                 CentralAC ac = new CentralAC(address, problem, new Date(), model);
                 todayServiceCalls.add(ac);
-                System.out.println("Added AC unit " + ac + " to list of calls");
+                System.out.println("Added the following AC unit to list of calls:\n" + ac);
                 break;
 
             }
             case 3: {
                 return;
+
+            }
+            default: {
+                System.out.println("Enter a number from the menu choices");
             }
 
         }
 
     }
+
+
+    //Validation methods
 
     private static int getPositiveIntInput() {
 
