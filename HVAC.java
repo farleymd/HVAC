@@ -1,5 +1,8 @@
 //package com.Marty;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Date;
 import java.util.Scanner;
@@ -192,8 +195,19 @@ public class HVAC {
 
             }
             case 3: {
-                return;
+                System.out.println("Enter address of the Water Heater");
+                String address = getStringInput();
+                System.out.println("Enter description of problem");
+                String problem = getStringInput();
+                System.out.println("Enter age of the water heater");
+                int age = getPositiveIntInput();
+                System.out.println("What date would you like the water heater serviced?");
+                String userDate = scanner.next();
+                Date requestedDate = getDateInput(userDate);
 
+                WaterHeater waterHeater = new WaterHeater(address, problem, new Date(), requestedDate, age);
+                todayServiceCalls.add(waterHeater);
+                System.out.println("Added the following water heater unit to list of calls:\n" + waterHeater);
             }
             default: {
                 System.out.println("Enter a number from the menu choices");
@@ -203,8 +217,21 @@ public class HVAC {
 
     }
 
+    private static Date getDateInput(String userDate) {
+        while (true) {
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date entry = dateFormat.parse(userDate);
+                return entry;
+            } catch (ParseException dfe) {
+                System.out.println("You need an actual date.");
+            }
+        }
+    }
 
-    //Validation methods
+
+
+        //Validation methods
 
     private static int getPositiveIntInput() {
 
