@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Created by Marty on 3/29/2015.
@@ -24,12 +28,17 @@ public class ServiceGUI extends JFrame {
     private JButton deleteTicketButton;
     private JButton quitButton;
     private JPanel rootPanel;
+    private JComboBox modelBox;
+    private JLabel modelText;
 
     DefaultListModel<ServiceCall> serviceCallListModel;
 
     final String FORCED_AIR = "Forced Air";
     final String BOILER = "Boiler";
     final String OCTOPUS = "Octopus";
+
+    boolean furanceIsChecked = false;
+    boolean acIsChecked = false;
 
     public ServiceGUI(){
         super("Service Call Manager");
@@ -47,6 +56,42 @@ public class ServiceGUI extends JFrame {
         typeBox.addItem(FORCED_AIR);
         typeBox.addItem(BOILER);
         typeBox.addItem(OCTOPUS);
+
+        addTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String serviceAddress = addressText.getText();
+                String problemDescription = descriptionText.getText();
+            }
+        });
+
+
+
+        furnaceCheck.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                typeBox.enable();
+                typeText.enable();
+                furanceIsChecked = true;
+
+                if (acIsChecked == true){
+                    JOptionPane.showInputDialog("You can only check one of the check boxes.");
+                }
+            }
+        });
+
+        acCheck.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                modelBox.enable();
+                modelText.enable();
+                acIsChecked = true;
+
+                if (furanceIsChecked == true){
+                    JOptionPane.showInputDialog("You can only check one of the check boxes.");
+                }
+            }
+        });
     }
 
 

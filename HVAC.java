@@ -21,6 +21,8 @@ public class HVAC {
 
     public static void main(String[] args) {
 
+        ServiceGUI serviceGUI = new ServiceGUI();
+
         //Use todayServiceCalls as a Queue
         //So, add new calls to the end with add()
         //Remove a resolved call from the front of the queue with remove()
@@ -205,9 +207,9 @@ public class HVAC {
                 String userDate = scanner.next();
                 Date requestedDate = getDateInput(userDate);
 
-                WaterHeater waterHeater = new WaterHeater(address, problem, new Date(), requestedDate, age);
-                todayServiceCalls.add(waterHeater);
-                System.out.println("Added the following water heater unit to list of calls:\n" + waterHeater);
+                //WaterHeater waterHeater = new WaterHeater(address, problem, new Date(), requestedDate, age);
+               // todayServiceCalls.add(waterHeater);
+                //System.out.println("Added the following water heater unit to list of calls:\n" + waterHeater);
             }
             default: {
                 System.out.println("Enter a number from the menu choices");
