@@ -75,7 +75,10 @@ public class ServiceGUI extends JFrame {
                 furanceIsChecked = true;
 
                 if (acIsChecked == true){
-                    JOptionPane.showInputDialog("You can only check one of the check boxes.");
+                    JOptionPane.showMessageDialog(null, "You can only check one of the check" +
+                            "boxes.", "Checkbox Warning", JOptionPane.ERROR_MESSAGE);
+                    furnaceCheck.setSelected(false);
+                    acCheck.setSelected(false);
                 }
             }
         });
@@ -88,7 +91,10 @@ public class ServiceGUI extends JFrame {
                 acIsChecked = true;
 
                 if (furanceIsChecked == true){
-                    JOptionPane.showInputDialog("You can only check one of the check boxes.");
+                    JOptionPane.showMessageDialog(null, "You can only check one of the check" +
+                            "boxes.", "Checkbox Warning", JOptionPane.ERROR_MESSAGE);
+                    furnaceCheck.setSelected(false);
+                    acCheck.setSelected(false);
                 }
             }
         });
