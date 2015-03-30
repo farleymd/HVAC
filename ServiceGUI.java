@@ -25,7 +25,7 @@ public class ServiceGUI extends JFrame {
     private JTextField feeText;
     private JLabel typeText;
     private JComboBox typeBox;
-    private JList serviceCallList;
+    private JList <ServiceCall> serviceCallList;
     private JButton addTicketButton;
     private JButton clearFieldsButton;
     private JButton resolveTicketButton;
@@ -137,6 +137,39 @@ public class ServiceGUI extends JFrame {
                 typeText.setEnabled(false);
 
 
+            }
+        });
+
+        resolveTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ServiceCall resolvedCall = ServiceGUI.this.serviceCallList.getSelectedValue();
+                String resolution = JOptionPane.showInputDialog("How was the issue resolved?");
+                Date resolvedDate = new Date();
+                String resolvedDateText = JOptionPane.showInputDialog("On what date was the issue resolved?");
+
+                try {
+                    DateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                     resolvedDate = format.parse(resolvedDateText);
+                } catch (ParseException pe){
+                    pe.printStackTrace();
+                }
+
+                resolvedCall.setResolution(resolution);
+                resolvedCall.setResolvedDate(resolvedDate);
+
+                ServiceGUI.this.serviceCallListModel.removeElement(resolvedCall);
+
+            }
+        });
+
+        deleteTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ServiceCall toDelete = ServiceGUI.this.serviceCallList.getSelectedValue();
+
+                
+                ServiceGUI.this.serviceCallListModel.removeElement(toDelete);
             }
         });
 
