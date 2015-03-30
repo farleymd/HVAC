@@ -168,7 +168,7 @@ public class ServiceGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ServiceCall toDelete = ServiceGUI.this.serviceCallList.getSelectedValue();
 
-                
+
                 ServiceGUI.this.serviceCallListModel.removeElement(toDelete);
             }
         });
@@ -219,6 +219,4 @@ public class ServiceGUI extends JFrame {
             }
         });
     }
-
-
 }
