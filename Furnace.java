@@ -44,13 +44,13 @@ public class Furnace extends ServiceCall {
 
 
         return "Furnace Service Call " + "\n" +
-                "Service Address= " + serviceAddress + "\n" +
-                "Problem Description = " + problemDescription  + "\n" +
-                "Furnace Type = " + typeString + "\n" +
-                "Reported Date = " + reportedDate + "\n" +
-                "Resolved Date = " + resolvedDateString + "\n" +
-                "Resolution = " + resolutionString + "\n" +
-                "Fee = " + feeString ;
+                " Service Address= " + serviceAddress + "\n" +
+                " Problem Description = " + problemDescription  + "\n" +
+                " Furnace Type = " + typeString + "\n" +
+                " Reported Date = " + reportedDate + "\n" +
+                " Resolved Date = " + resolvedDateString + "\n" +
+                " Resolution = " + resolutionString + "\n" +
+                " Fee = " + feeString ;
 
     }
 

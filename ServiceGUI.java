@@ -4,6 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Marty on 3/29/2015.
@@ -33,9 +37,13 @@ public class ServiceGUI extends JFrame {
 
     DefaultListModel<ServiceCall> serviceCallListModel;
 
-    final String FORCED_AIR = "Forced Air";
-    final String BOILER = "Boiler";
-    final String OCTOPUS = "Octopus";
+    final String FORCED_AIR = "Forced Air";  //furance type 1
+    final String BOILER = "Boiler";  //furance type 2
+    final String OCTOPUS = "Octopus"; //furance type 3
+
+    final String INFINITY = "Infinity";
+    final String PERFORMANCE = "Performance";
+    final String COMFORT = "Comfort";
 
     boolean furanceIsChecked = false;
     boolean acIsChecked = false;
@@ -57,11 +65,78 @@ public class ServiceGUI extends JFrame {
         typeBox.addItem(BOILER);
         typeBox.addItem(OCTOPUS);
 
+        modelBox.addItem(INFINITY);
+        modelBox.addItem(PERFORMANCE);
+        modelBox.addItem(COMFORT);
+
+
+
         addTicketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String serviceAddress = addressText.getText();
                 String problemDescription = descriptionText.getText();
+                String date = dateText.getText();
+                Date reportedDate = new Date(1901, 01, 01);
+
+                int furanceType = 0;
+                String model = "model";
+
+                if (furanceIsChecked == true && acIsChecked == false){  //add a furnace ticket only if AC check box isn't marked
+                    if (typeBox.getSelectedItem().equals(FORCED_AIR)){
+                        furanceType = 1;
+                    } else if (typeBox.getSelectedItem().equals(BOILER)){
+                        furanceType = 2;
+                    } else {
+                        furanceType = 3;
+                    }
+
+                    try {
+                        DateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                        reportedDate = format.parse(date);
+                    } catch (ParseException pe){
+                        pe.printStackTrace();
+                    }
+
+                    Furnace furnaceTicket = new Furnace(serviceAddress, problemDescription, reportedDate, furanceType);
+                    ServiceGUI.this.serviceCallListModel.addElement(furnaceTicket);
+
+                }
+
+                if (acIsChecked == true && furanceIsChecked == false){  //add a CentralAC ticket only if the furance check box isn't marked
+                    if (modelBox.getSelectedItem().equals(INFINITY)){
+                        model = "Infinity";
+                    } else if (modelBox.getSelectedItem().equals(PERFORMANCE)){
+                        model = "Performance";
+                    } else {
+                        model = "Comfort";
+                    }
+
+                    CentralAC acTicket = new CentralAC(serviceAddress, problemDescription, reportedDate, model);
+                    ServiceGUI.this.serviceCallListModel.addElement(acTicket);
+                }
+            }
+        });
+
+        clearFieldsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addressText.setText("");
+                descriptionText.setText("");
+                dateText.setText("");
+
+                furnaceCheck.setSelected(false);  //uncheck the checkboxes
+                acCheck.setSelected(false);
+                acIsChecked = false;   //change the check box identifiers
+                furanceIsChecked = false;
+
+                modelBox.setEnabled(false);  //hide the model drop list
+                modelText.setEnabled(false);
+
+                typeBox.setEnabled(false);  //hide the furnance type drop list
+                typeText.setEnabled(false);
+
+
             }
         });
 
@@ -70,8 +145,8 @@ public class ServiceGUI extends JFrame {
         furnaceCheck.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                typeBox.enable();
-                typeText.enable();
+                typeBox.setEnabled(true);  //display the furance type drop list
+                typeText.setEnabled(true);
                 furanceIsChecked = true;
 
                 if (acIsChecked == true){
@@ -79,6 +154,8 @@ public class ServiceGUI extends JFrame {
                             "boxes.", "Checkbox Warning", JOptionPane.ERROR_MESSAGE);
                     furnaceCheck.setSelected(false);
                     acCheck.setSelected(false);
+                    acIsChecked = false;
+                    furanceIsChecked = false;
                 }
             }
         });
@@ -86,8 +163,9 @@ public class ServiceGUI extends JFrame {
         acCheck.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                modelBox.enable();
-                modelText.enable();
+                modelBox.setEnabled(true);  //display the model type drop list
+                modelText.setEnabled(true);
+
                 acIsChecked = true;
 
                 if (furanceIsChecked == true){
@@ -95,7 +173,16 @@ public class ServiceGUI extends JFrame {
                             "boxes.", "Checkbox Warning", JOptionPane.ERROR_MESSAGE);
                     furnaceCheck.setSelected(false);
                     acCheck.setSelected(false);
+                    acIsChecked = false;
+                    furanceIsChecked = false;
                 }
+            }
+        });
+
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
     }
